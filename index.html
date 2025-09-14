@@ -1,0 +1,397 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Responsive Portfolio</title>
+    <link rel="stylesheet" href="style.css" />
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: "Poppins", sans-serif;
+      }
+      body {
+        background: #f9f9f9;
+        color: #333;
+        overflow-x: hidden;
+      }
+      a {
+        text-decoration: none;
+        color: inherit;
+      }
+
+      header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        background: #222;
+        color: #fff;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 30px;
+        z-index: 1000;
+      }
+      header h1 {
+        font-size: 1.5rem;
+        color: #f3961c;
+      }
+      nav {
+        display: flex;
+        gap: 20px;
+      }
+      nav a {
+        transition: color 0.3s;
+      }
+      nav a:hover {
+        color: #f3961c;
+      }
+      .menu-toggle {
+        display: none;
+        font-size: 1.8rem;
+        cursor: pointer;
+      }
+
+      @media (max-width: 768px) {
+        nav {
+          display: none;
+          flex-direction: column;
+          position: absolute;
+          right: 0;
+          top: 60px;
+          background: #333;
+          width: 200px;
+          padding: 20px;
+        }
+        nav.active {
+          display: flex;
+        }
+        .menu-toggle {
+          display: block;
+        }
+      }
+
+      /* -------- Hero -------- */
+      .hero {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        background: linear-gradient(135deg, #3b141c, #f3961c);
+        color: #fff;
+        padding: 0 20px;
+      }
+      .hero h2 {
+        font-size: 2.5rem;
+        animation: fadeInDown 1s ease forwards;
+      }
+      .hero p {
+        margin: 15px 0;
+        font-size: 1.2rem;
+        animation: fadeInUp 1.5s ease forwards;
+      }
+      .hero button {
+        background: #fff;
+        color: #3b141c;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        transition: transform 0.3s;
+      }
+      .hero button:hover {
+        transform: scale(1.1);
+      }
+
+      /* -------- Sections -------- */
+      section {
+        padding: 80px 20px;
+        max-width: 1100px;
+        margin: auto;
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 1s ease;
+      }
+      section.visible {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      h2.section-title {
+        text-align: center;
+        font-size: 2rem;
+        margin-bottom: 30px;
+        color: #3b141c;
+      }
+
+      /* About */
+      .about {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 30px;
+        align-items: center;
+      }
+      .about img {
+        width: 100%;
+        border-radius: 50%;
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+        transition: transform 0.3s;
+      }
+      .about img:hover {
+        transform: scale(1.05);
+      }
+      .about p {
+        font-size: 1.1rem;
+        line-height: 1.6;
+      }
+      @media (max-width: 768px) {
+        .about {
+          grid-template-columns: 1fr;
+          text-align: center;
+        }
+      }
+
+      /* Skills */
+      .skills {
+        max-width: 800px;
+        margin: auto;
+      }
+      .skill {
+        margin: 15px 0;
+      }
+      .skill-name {
+        font-weight: bold;
+        margin-bottom: 5px;
+      }
+      .progress {
+        height: 12px;
+        background: #ddd;
+        border-radius: 10px;
+        overflow: hidden;
+      }
+      .progress-bar {
+        height: 100%;
+        background: #f3961c;
+        width: 0;
+        transition: width 2s ease;
+      }
+
+      /* Projects */
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+        gap: 20px;
+      }
+      .project {
+        background: #fff;
+        border-radius: 15px;
+        padding: 15px;
+        text-align: center;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        transition: transform 0.3s;
+      }
+      .project img {
+        width: 100%;
+        border-radius: 10px;
+        margin-bottom: 10px;
+      }
+      .project:hover {
+        transform: translateY(-10px);
+      }
+
+      /* Contact */
+      .contact form {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+        max-width: 500px;
+        margin: auto;
+      }
+      .contact input,
+      .contact textarea {
+        padding: 12px;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        font-size: 1rem;
+      }
+      .contact button {
+        background: #3b141c;
+        color: #fff;
+        padding: 12px;
+        border: none;
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 0.3s;
+      }
+      .contact button:hover {
+        background: #f3961c;
+      }
+
+      /* -------- Footer -------- */
+      footer {
+        text-align: center;
+        padding: 20px;
+        background: #222;
+        color: #fff;
+      }
+
+      /* -------- Animations -------- */
+      @keyframes fadeInDown {
+        from {
+          opacity: 0;
+          transform: translateY(-50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(50px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Navbar -->
+    <header>
+      <h1>My Portfolio</h1>
+      <span class="menu-toggle">☰</span>
+      <nav>
+        <a href="#hero">Home</a>
+        <a href="#about">About</a>
+        <a href="#skills">Skills</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <!-- Hero -->
+    <section class="hero" id="hero">
+      <h2>Hello, I'm Komal 👋</h2>
+      <p>Full-Stack Developer | Responsive Web Designer</p>
+      <p>
+        Bachelor of computer application student. I consider my self a
+        responsible and orderly person. I am looking forward to my first work
+        experience.
+      </p>
+      <button
+        onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'});"
+      >
+        Hire Me
+      </button>
+    </section>
+
+    <!-- About -->
+    <section class="about" id="about">
+      <div>
+        <h2 class="section-title">About Me</h2>
+        <p>
+          I am a BCA final-year student with skills in HTML, CSS, JavaScript,
+          and MERN stack. I enjoy building clean, responsive, and user-friendly
+          web applications.My main objective is to be part of a professional
+          team in which the achievements and successes of each individual
+          recognized in an optiomal and pleasant work environment.
+        </p>
+      </div>
+      <img src="./images/komal.png" alt="Profile Photo" />
+    </section>
+
+    <!-- Skills -->
+    <section class="skills" id="skills">
+      <h2 class="section-title">My Skills</h2>
+      <div class="skill">
+        <div class="skill-name">HTML</div>
+        <div class="progress">
+          <div class="progress-bar" data-skill="96%"></div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-name">CSS</div>
+        <div class="progress">
+          <div class="progress-bar" data-skill="90%"></div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-name">JavaScript</div>
+        <div class="progress">
+          <div class="progress-bar" data-skill="80%"></div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-name">Node.js</div>
+        <div class="progress">
+          <div class="progress-bar" data-skill="75%"></div>
+        </div>
+      </div>
+      <div class="skill">
+        <div class="skill-name">React</div>
+        <div class="progress">
+          <div class="progress-bar" data-skill="50%"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Projects -->
+    <section class="projects" id="projects">
+      <h2 class="section-title">Projects</h2>
+      <div class="projects-grid">
+        <div class="project">
+          <img src="./images/p1.png" alt="Project 1" />
+          <h3>Portfolio Website</h3>
+          <p>Responsive portfolio with animations using HTML, CSS, and JS.</p>
+          <a href="../Portfolio/profile.html"
+            ><button class="btn1">View more</button></a
+          >
+        </div>
+        <div class="project">
+          <img src="./images/f1.jpg" alt="Project 2" />
+          <h3>Restaurant Page</h3>
+          <p>A restaurant page with MongoDB, Express, React, and Node.js</p>
+          <a href="./../Foodie/Restaurant page/home.html"
+            ><button class="btn1">View more</button></a
+          >
+        </div>
+        <div class="project">
+          <img src="./images/no.jpg" alt="Project 3" />
+          <h3>Number Guessing Game</h3>
+          <p>
+            A fun game built with JavaScript demonstrating DOM manipulation.
+          </p>
+          <a href="../Number/Number.html"
+            ><button class="btn1">View more</button></a
+          >
+        </div>
+      </div>
+    </section>
+
+    <!-- Contact -->
+    <section class="contact" id="contact">
+      <h2 class="section-title">Contact Me</h2>
+      <form onsubmit="event.preventDefault(); alert('Message Sent!');">
+        <input type="text" placeholder="Your Name" required />
+        <input type="email" placeholder="Your Email" required />
+        <textarea rows="5" placeholder="Your Message" required></textarea>
+        <button type="submit">Send Message</button>
+      </form>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+      <p>@ 2025 Komal. All Rights Reserved.</p>
+    </footer>
+
+    <!-- JavaScript -->
+    <script src="./script.js"></script>
+  </body>
+</html>
